@@ -208,7 +208,7 @@ function loadData() {
   let cfgData = {};
 
   // curData.users = loadXML(path.join(cwd, "data/users.xlsx"));
-  curData.users = loadXML(path.join(dataBath, "data/users.xlsx"));
+  curData.users = loadXML(path.join(dataBath, "data/users2.xlsx"));
   // 重新洗牌
   shuffle(curData.users);
 
@@ -237,11 +237,12 @@ function getLeftUsers() {
     lotteredUser[item[0]] = true;
   });
 
-  let leftUsers = Object.assign([], curData.users);
-  leftUsers = leftUsers.filter(user => {
-    return !lotteredUser[user[0]];
-  });
-  curData.leftUsers = leftUsers;
+  curData.leftUsers = curData.users
+//   let leftUsers = Object.assign([], curData.users);
+//   leftUsers = leftUsers.filter(user => {
+//     return !lotteredUser[user[0]];
+//   });
+//   curData.leftUsers = leftUsers;
 }
 
 loadData();

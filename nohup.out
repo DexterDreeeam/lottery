@@ -1,0 +1,10 @@
+npm ERR! code ENOENT
+npm ERR! syscall open
+npm ERR! path /home/jiaxiangzou/lottery/package.json
+npm ERR! errno -2
+npm ERR! enoent ENOENT: no such file or directory, open '/home/jiaxiangzou/lottery/package.json'
+npm ERR! enoent This is related to npm not being able to find a file.
+npm ERR! enoent 
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/jiaxiangzou/.npm/_logs/2023-08-11T05_53_29_929Z-debug.log

@@ -349,7 +349,7 @@ function createCard(user, isBold, id, showTable) {
 
   element.appendChild(createElement("name", user[1]));
 
-  element.appendChild(createElement("details", user[0] + "<br/>" + user[2]));
+  element.appendChild(createElement("details", user[2]));
   return element;
 }
 
@@ -509,13 +509,15 @@ function selectCard(duration = 600) {
     }
   }
 
-  let text = currentLuckys.map(item => item[1]);
-  addQipao(
-    `恭喜${text.join("、")}获得${currentPrize.title}, 新的一年必定旺旺旺。`
-  );
+//   let text = currentLuckys.map(item => item[1]);
+//   addQipao(
+//     `恭喜${text.join("、")}获得${currentPrize.title}, 新的一年必定旺旺旺。`
+//   );
 
   selectedCardIndex.forEach((cardIndex, index) => {
-    changeCard(cardIndex, currentLuckys[index]);
+    console.log("***")
+    console.log(cardIndex)
+    changeCard(cardIndex, basicData.users[cardIndex]);
     var object = threeDCards[cardIndex];
     new TWEEN.Tween(object.position)
       .to(
@@ -639,9 +641,9 @@ function lottery() {
       leftCount--;
       leftPrizeCount--;
 
-      let cardIndex = random(TOTAL_CARDS);
+      let cardIndex = randomUser(basicData.users);
       while (selectedCardIndex.includes(cardIndex)) {
-        cardIndex = random(TOTAL_CARDS);
+        cardIndex = randomUser(basicData.users);
       }
       selectedCardIndex.push(cardIndex);
 
@@ -702,6 +704,38 @@ function random(num) {
 }
 
 /**
+ * 随机抽奖
+ */
+function randomUser(users) {
+  let num = users.length;
+  let weights = [];
+  let sum = 0;
+  console.log("===========================")
+  console.log(currentPrizeIndex)
+  for (let i = 0; i < num; i++) {
+    let u = users[i]
+    let weight = u[2];
+    if (currentPrizeIndex === 2 && weight < 4) {
+        weight = 0
+    } else if (currentPrizeIndex === 1 && weight < 8) {
+        weight = 0
+    }
+    sum += weight;
+    weights.push(sum);
+  }
+  let random = Math.floor(Math.random() * sum);
+  console.log(sum)
+  console.log(random)
+  for (let i = 0; i < num; i++) {
+    if (weights[i] >= random) {
+      console.log(i)
+      console.log(users[i])
+      return i;
+    }
+  }
+}
+
+/**
  * 切换名牌人员信息
  */
 function changeCard(cardIndex, user) {
@@ -709,7 +743,7 @@ function changeCard(cardIndex, user) {
 
   card.innerHTML = `<div class="company">${COMPANY}</div><div class="name">${
     user[1]
-  }</div><div class="details">${user[0] || ""}<br/>${user[2] || "PSST"}</div>`;
+  }</div><div class="details">${user[2] + "积分"}</div>`;
 }
 
 /**
@@ -737,7 +771,7 @@ function shineCard() {
     maxUser = basicData.leftUsers.length;
     for (let i = 0; i < shineCard; i++) {
       let index = random(maxUser),
-        cardIndex = random(TOTAL_CARDS);
+      cardIndex = random(TOTAL_CARDS);
       // 当前显示的已抽中名单不进行随机切换
       if (selectedCardIndex.includes(cardIndex)) {
         continue;
